@@ -24,4 +24,11 @@ export default class API {
   static fetchDataset(url) {
     return fetchAsync([ROOT, url].join("/"));
   }
+
+  static parseDataset(response) {
+    return {
+      dataset: this.objectify(response.dataset),
+      metadata: this.objectify(response.metadata, "key")
+    };
+  }
 }
