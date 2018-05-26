@@ -3,10 +3,12 @@ import thunk from "redux-thunk";
 
 import API from "./common/api";
 import locations from "./locations/reducer";
+import explorer from "./explorer/reducer";
 import { fetchLocations } from "./locations/actions";
 
 const reducer = combineReducers({
-  locations
+  locations,
+  explorer
 });
 
 const middlewares = [thunk.withExtraArgument({ API })];
