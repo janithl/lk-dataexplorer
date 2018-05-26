@@ -1,4 +1,5 @@
 import Location from "../locations/Location";
+import { DATASETS } from "./constants";
 
 const ROOT =
   "https://raw.githubusercontent.com/janithl/lk-dataexplorer/master/public/data";
@@ -19,5 +20,9 @@ export default class API {
 
   static parseLocations(response) {
     return objectify(response, "code", loc => new Location(loc));
+  }
+
+  static fetchElectoralData() {
+    return fetchAsync([ROOT, DATASETS.electoral.url].join("/"));
   }
 }

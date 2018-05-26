@@ -6,6 +6,7 @@ import { Container } from "reactstrap";
 import store from "./store";
 import HomeScreen from "./common/ui/Home";
 import LocationListScreen from "./locations/ui/LocationList";
+import ExplorerScreen from "./explorer/ui/Explorer";
 
 const App = () => (
   <Provider store={store}>
@@ -13,6 +14,7 @@ const App = () => (
       <Container className="main-container">
         <Route exact path="/" component={HomeScreen} />
         <Route exact path="/locations" component={LocationListScreen} />
+        <Route path="/explore/:id" component={ExplorerScreen} />
       </Container>
     </Router>
   </Provider>

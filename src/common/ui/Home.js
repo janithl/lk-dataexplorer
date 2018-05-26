@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Button } from "reactstrap";
+import { DATASETS } from "../constants";
 
 const Home = () => (
   <div className="App">
@@ -9,11 +9,13 @@ const Home = () => (
       <h1 className="App-title">Welcome to LK DataExplorer</h1>
     </header>
     <p className="App-intro">We will be getting started soon</p>
-    <Link to="/locations">
-      <Button outline color="danger">
-        Danger!
-      </Button>
-    </Link>
+    <ul>
+      {Object.values(DATASETS).map(dataset => (
+        <li>
+          <Link to={["explore", dataset.id].join("/")}>{dataset.title}</Link>
+        </li>
+      ))}
+    </ul>
   </div>
 );
 

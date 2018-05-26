@@ -1,53 +1,50 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Form, FormGroup, Label, Input } from "reactstrap";
+
+import LocationItem from "./LocationItem";
+import Filter from "../../common/ui/Filter";
+import Loader from "../../common/ui/Loader";
 
 import { filterLocations } from "../actions";
+
+const searchLocations = (locations, search) => {
+  const searchRegex = new RegExp(search, "ig");
+  return locations.filter(
+    loc =>
+      [loc.getFullName(), loc.getFullName("si"), loc.getFullName("ta")]
+        .join(" ")
+        .search(searchRegex) > -1
+  );
+};
 
 export const LocationList = ({
   fetching,
   locations,
-  filter,
+  filterValue,
   onFilterChange
 }) => (
-  <div className="App">
-    <header className="App-header">
-      <h1 className="App-title">Locations</h1>
-    </header>
+  <div>
+    <h1>Locations</h1>
 
-    <Form>
-      <FormGroup>
-        <Label for="locationFilter">Filter</Label>
-        <Input
-          type="text"
-          name="filter"
-          id="locationFilter"
-          placeholder="Filter Locations"
-          value={filter}
-          onChange={onFilterChange}
-        />
-      </FormGroup>
-    </Form>
+    <Filter
+      filterValue={filterValue}
+      onFilterChange={onFilterChange}
+      placeholder="Filter Locations"
+    />
 
-    <p className="App-intro">
-      {fetching
-        ? "fetching"
-        : locations
-            .filter(loc =>
-              loc
-                .getFullName()
-                .toUpperCase()
-                .includes(filter.toUpperCase())
-            )
-            .map(loc => <li key={loc.getCode()}>{loc.getFullName()}</li>)}
-    </p>
+    <Loader loading={fetching}>
+      {!fetching &&
+        searchLocations(locations, filterValue).map(loc => (
+          <LocationItem key={loc.getCode()} location={loc} />
+        ))}
+    </Loader>
   </div>
 );
 
 const mapStateToProps = state => ({
   fetching: state.locations.fetching,
   locations: Object.values(state.locations.locations),
-  filter: state.locations.filter
+  filterValue: state.locations.filter
 });
 
 const mapDispatchToProps = dispatch => ({
