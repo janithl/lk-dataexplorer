@@ -2,4 +2,11 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background-image: url(./background.png);
+}
+
+.main-container {
+  background-color: white;
+  padding: 20px;
+  margin-top: 40px;
 }
