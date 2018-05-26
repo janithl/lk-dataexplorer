@@ -4,28 +4,41 @@ import { Button, Table } from "reactstrap";
 
 import { fetchDataset } from "../actions";
 
-const Viewer = ({ explorer, onRefresh }) => (
+const Viewer = ({ metadata, dataset, onRefresh }) => (
   <div>
     <Button onClick={onRefresh}>Refresh</Button>
 
-    <Table striped>
-      <tbody>
-        {explorer &&
-          Object.values(explorer).map(item => (
-            <tr key={item["polling-division"]}>
-              <th scope="row">{item["polling-division"]}</th>
-              {Object.values(item).map(cell => <td>{cell}</td>)}
+    {metadata &&
+      dataset && (
+        <Table responsive striped size="sm">
+          <thead>
+            <tr>
+              {Object.values(metadata).map(meta => (
+                <th key={meta.key}>{meta.value}</th>
+              ))}
             </tr>
-          ))}
-      </tbody>
-    </Table>
+          </thead>
+          <tbody>
+            {Object.values(dataset).map(item => (
+              <tr key={item.id}>
+                {Object.values(metadata).map(meta => (
+                  <td key={meta.key}>{item[meta.key]}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
   </div>
 );
 
-const mapStateToProps = state => ({ explorer: state.explorer.electoral });
+const mapStateToProps = state => ({
+  metadata: state.explorer.metadata,
+  dataset: state.explorer.dataset
+});
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onRefresh: id => dispatch(fetchDataset(ownProps.id))
+  onRefresh: () => dispatch(fetchDataset(ownProps.id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Viewer);
