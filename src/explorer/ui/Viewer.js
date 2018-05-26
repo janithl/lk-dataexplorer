@@ -9,8 +9,6 @@ const Viewer = ({ metadata, dataset, onRefresh }) => {
 
   return (
     <div>
-      <Button onClick={onRefresh}>Refresh</Button>
-
       {metadata &&
         dataset && (
           <Table responsive striped size="sm">
@@ -30,6 +28,8 @@ const Viewer = ({ metadata, dataset, onRefresh }) => {
             </tbody>
           </Table>
         )}
+
+      <Button onClick={onRefresh}>Refresh</Button>
     </div>
   );
 };
