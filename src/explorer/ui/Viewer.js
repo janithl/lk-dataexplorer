@@ -4,33 +4,35 @@ import { Button, Table } from "reactstrap";
 
 import { fetchDataset } from "../actions";
 
-const Viewer = ({ metadata, dataset, onRefresh }) => (
-  <div>
-    <Button onClick={onRefresh}>Refresh</Button>
+const Viewer = ({ metadata, dataset, onRefresh }) => {
+  const filteredMeta = Object.values(metadata).filter(meta => !meta.optional);
 
-    {metadata &&
-      dataset && (
-        <Table responsive striped size="sm">
-          <thead>
-            <tr>
-              {Object.values(metadata).map(meta => (
-                <th key={meta.key}>{meta.value}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {Object.values(dataset).map(item => (
-              <tr key={item.id}>
-                {Object.values(metadata).map(meta => (
-                  <td key={meta.key}>{item[meta.key]}</td>
-                ))}
+  return (
+    <div>
+      <Button onClick={onRefresh}>Refresh</Button>
+
+      {metadata &&
+        dataset && (
+          <Table responsive striped size="sm">
+            <thead>
+              <tr>
+                {filteredMeta.map(meta => <th key={meta.key}>{meta.value}</th>)}
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
-  </div>
-);
+            </thead>
+            <tbody>
+              {Object.values(dataset).map(item => (
+                <tr key={item.id}>
+                  {filteredMeta.map(meta => (
+                    <td key={meta.key}>{item[meta.key]}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+    </div>
+  );
+};
 
 const mapStateToProps = state => ({
   metadata: state.explorer.metadata,
