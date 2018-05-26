@@ -2,6 +2,8 @@ export const FETCH_LOCATIONS_REQUEST = "locations/fetch/request";
 export const FETCH_LOCATIONS_SUCCESS = "locations/fetch/success";
 export const FETCH_LOCATIONS_FAILURE = "locations/fetch/failure";
 
+export const FILTER_LOCATIONS = "locations/filter";
+
 export const fetchLocations = () => (dispatch, getState, { API }) => {
   dispatch({
     type: FETCH_LOCATIONS_REQUEST
@@ -16,3 +18,8 @@ export const fetchLocations = () => (dispatch, getState, { API }) => {
     )
     .catch(error => dispatch({ type: FETCH_LOCATIONS_FAILURE, error }));
 };
+
+export const filterLocations = filter => ({
+  type: FILTER_LOCATIONS,
+  payload: { filter }
+});

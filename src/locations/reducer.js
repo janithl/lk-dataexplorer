@@ -1,13 +1,15 @@
 import {
   FETCH_LOCATIONS_REQUEST,
   FETCH_LOCATIONS_SUCCESS,
-  FETCH_LOCATIONS_FAILURE
+  FETCH_LOCATIONS_FAILURE,
+  FILTER_LOCATIONS
 } from "./actions";
 
 const initialState = {
   locations: {},
   fetching: false,
-  errorCode: null
+  errorCode: null,
+  filter: ""
 };
 
 export default function reducer(state = initialState, action = null) {
@@ -29,6 +31,12 @@ export default function reducer(state = initialState, action = null) {
       return {
         ...state,
         fetching: false
+      };
+
+    case FILTER_LOCATIONS:
+      return {
+        ...state,
+        filter: action.payload.filter
       };
 
     default:
