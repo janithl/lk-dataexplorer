@@ -1,7 +1,8 @@
 import {
   FETCH_DATASET_REQUEST,
   FETCH_DATASET_SUCCESS,
-  FETCH_DATASET_FAILURE
+  FETCH_DATASET_FAILURE,
+  TOGGLE_META_OPTIONAL
 } from "./actions";
 
 const initialState = {
@@ -20,6 +21,18 @@ export default function reducer(state = initialState, action = null) {
 
     case FETCH_DATASET_FAILURE:
       return initialState;
+
+    case TOGGLE_META_OPTIONAL:
+      return {
+        ...state,
+        metadata: {
+          ...state.metadata,
+          [action.payload.key]: {
+            ...state.metadata[action.payload.key],
+            optional: !state.metadata[action.payload.key].optional
+          }
+        }
+      };
 
     default:
       return state;
