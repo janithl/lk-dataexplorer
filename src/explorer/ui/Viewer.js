@@ -1,10 +1,28 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Button, Table } from "reactstrap";
+import { Button, Table, UncontrolledTooltip } from "reactstrap";
 
 import { fetchDataset } from "../actions";
 
-const Viewer = ({ metadata, dataset, onRefresh }) => {
+const ViewerRow = ({ item, metaKey, locations }) =>
+  metaKey === "district" ? (
+    <td>
+      <a href="#" id={item.id}>
+        {item[metaKey]}
+      </a>
+      <UncontrolledTooltip target={item.id}>
+        {locations[item[metaKey]].getFullName()}
+        {" — "}
+        {locations[item[metaKey]].getFullName("si")}
+        {" — "}
+        {locations[item[metaKey]].getFullName("ta")}
+      </UncontrolledTooltip>
+    </td>
+  ) : (
+    <td>{item[metaKey]}</td>
+  );
+
+const Viewer = ({ metadata, dataset, locations, onRefresh }) => {
   const filteredMeta = Object.values(metadata).filter(meta => !meta.optional);
 
   return (
@@ -21,7 +39,12 @@ const Viewer = ({ metadata, dataset, onRefresh }) => {
               {Object.values(dataset).map(item => (
                 <tr key={item.id}>
                   {filteredMeta.map(meta => (
-                    <td key={meta.key}>{item[meta.key]}</td>
+                    <ViewerRow
+                      key={meta.key}
+                      metaKey={meta.key}
+                      item={item}
+                      locations={locations}
+                    />
                   ))}
                 </tr>
               ))}
@@ -36,7 +59,8 @@ const Viewer = ({ metadata, dataset, onRefresh }) => {
 
 const mapStateToProps = state => ({
   metadata: state.explorer.metadata,
-  dataset: state.explorer.dataset
+  dataset: state.explorer.dataset,
+  locations: state.locations.locations
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

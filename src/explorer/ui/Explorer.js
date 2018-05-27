@@ -3,16 +3,20 @@ import { Row, Col, Card, CardText, CardTitle } from "reactstrap";
 
 import Viewer from "./Viewer";
 import MetaControl from "./MetaControl";
+import Filter from "../../common/ui/Filter";
 import { DATASETS } from "../../common/constants";
 
 const Explorer = ({ match }) =>
   DATASETS[match.params.id] ? (
     <div>
       <Row className="align-items-center">
-        <Col xs="auto">
+        <Col xs="8">
           <h1>{DATASETS[match.params.id].title}</h1>
         </Col>
-        <Col xs="3">
+        <Col xs="2">
+          <Filter />
+        </Col>
+        <Col xs="2">
           <MetaControl />
         </Col>
       </Row>
