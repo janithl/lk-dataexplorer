@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import {
   Button,
   Modal,
@@ -8,6 +9,28 @@ import {
   TabContent,
   TabPane
 } from "reactstrap";
+import {
+  XYPlot,
+  VerticalGridLines,
+  HorizontalGridLines,
+  XAxis,
+  YAxis,
+  LineSeries
+} from "react-vis";
+
+const selected = [
+  "y-2007",
+  "y-2008",
+  "y-2009",
+  "y-2010",
+  "y-2011",
+  "y-2012",
+  "y-2013",
+  "y-2014",
+  "y-2015",
+  "y-2016",
+  "y-2017"
+];
 
 class GraphModal extends React.Component {
   state = {
@@ -55,7 +78,22 @@ class GraphModal extends React.Component {
             <TabPane tabId="graph">
               <ModalHeader toggle={this.toggle}>Graph</ModalHeader>
               <ModalBody>
-                <h4>Tab 2 Contents</h4>
+                <XYPlot height={500} width={500}>
+                  <VerticalGridLines />
+                  <HorizontalGridLines />
+                  <XAxis />
+                  <YAxis />
+                  {Object.values(this.props.dataset)
+                    .slice(0, 10)
+                    .map(d => (
+                      <LineSeries
+                        data={selected.map(key => ({
+                          x: key.substr(2),
+                          y: d[key]
+                        }))}
+                      />
+                    ))}
+                </XYPlot>
               </ModalBody>
               <ModalFooter>
                 <Button
@@ -77,4 +115,8 @@ class GraphModal extends React.Component {
   }
 }
 
-export default GraphModal;
+const mapStateToProps = state => ({
+  dataset: state.explorer.dataset
+});
+
+export default connect(mapStateToProps)(GraphModal);
