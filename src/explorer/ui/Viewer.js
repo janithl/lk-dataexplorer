@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Transition, animated } from "react-spring";
 import { Button, Table, UncontrolledTooltip } from "reactstrap";
 
 import { fetchDataset } from "../actions";
@@ -36,18 +37,26 @@ const Viewer = ({ metadata, dataset, locations, onRefresh }) => {
               </tr>
             </thead>
             <tbody>
-              {Object.values(dataset).map(item => (
-                <tr key={item.id}>
-                  {filteredMeta.map(meta => (
-                    <ViewerRow
-                      key={meta.key}
-                      metaKey={meta.key}
-                      item={item}
-                      locations={locations}
-                    />
-                  ))}
-                </tr>
-              ))}
+              <Transition
+                native
+                keys={Object.values(dataset).map(item => item.id)}
+                from={{ opacity: 0, height: 0 }}
+                enter={{ opacity: 1, height: 100 }}
+                leave={{ opacity: 0, height: 0 }}
+              >
+                {Object.values(dataset).map(item => styles => (
+                  <animated.tr style={styles}>
+                    {filteredMeta.map(meta => (
+                      <ViewerRow
+                        key={meta.key}
+                        metaKey={meta.key}
+                        item={item}
+                        locations={locations}
+                      />
+                    ))}
+                  </animated.tr>
+                ))}
+              </Transition>
             </tbody>
           </Table>
         )}
